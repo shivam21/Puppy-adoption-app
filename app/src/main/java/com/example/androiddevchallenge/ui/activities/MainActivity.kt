@@ -82,7 +82,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 }
 
 @ExperimentalAnimationApi
@@ -102,21 +101,22 @@ fun DogListContent() {
 @Composable
 fun MyApp(toolbarTitle: String = "", content: @Composable () -> Unit = {}) {
     Surface(color = MaterialTheme.colors.background) {
-        Scaffold(topBar = {
-            if (toolbarTitle.isNotEmpty())
-                TopAppBar(
-                    title = {
-                        Column(modifier = Modifier.padding(4.dp)) {
-                            Text(text = toolbarTitle)
-                        }
-                    },
-                    backgroundColor = Color.White,
-                    elevation = 4.dp
-                )
-        }) {
+        Scaffold(
+            topBar = {
+                if (toolbarTitle.isNotEmpty())
+                    TopAppBar(
+                        title = {
+                            Column(modifier = Modifier.padding(4.dp)) {
+                                Text(text = toolbarTitle)
+                            }
+                        },
+                        backgroundColor = Color.White,
+                        elevation = 4.dp
+                    )
+            }
+        ) {
             content()
         }
-
     }
 }
 
@@ -138,7 +138,8 @@ fun ScrollToTopButton(listState: LazyListState, scope: CoroutineScope) {
                     scope.launch {
                         listState.scrollToItem(0, 0)
                     }
-                }, shape = CircleShape,
+                },
+                shape = CircleShape,
                 backgroundColor = Color.White,
                 modifier = Modifier.padding(bottom = 4.dp)
             ) {
@@ -150,25 +151,32 @@ fun ScrollToTopButton(listState: LazyListState, scope: CoroutineScope) {
             }
         }
     }
-
 }
 
 @Composable
 fun DogList(dogsList: List<DogItem>, listState: LazyListState) {
-    LazyColumn(state = listState, content = {
-        items(dogsList) { item ->
-            DogListItem(item)
-        }
-    }, contentPadding = PaddingValues(bottom = 60.dp))
+    LazyColumn(
+        state = listState,
+        content = {
+            items(dogsList) { item ->
+                DogListItem(item)
+            }
+        },
+        contentPadding = PaddingValues(bottom = 60.dp)
+    )
 }
 
 @Composable
 fun DogListItem(item: DogItem, context: Context = LocalContext.current) {
-    Card(Modifier.fillMaxWidth().padding(8.dp).clickable {
-        context.startActivity(Intent(context, DogDetailActivity::class.java).apply {
-            putExtra(INTENT_DOG_ITEM, item)
-        })
-    }) {
+    Card(
+        Modifier.fillMaxWidth().padding(8.dp).clickable {
+            context.startActivity(
+                Intent(context, DogDetailActivity::class.java).apply {
+                    putExtra(INTENT_DOG_ITEM, item)
+                }
+            )
+        }
+    ) {
         Column(Modifier.fillMaxWidth()) {
             DogCardHeader(item)
             NetworkImage(
@@ -179,7 +187,6 @@ fun DogListItem(item: DogItem, context: Context = LocalContext.current) {
             DogCardFooter(item)
         }
     }
-
 }
 
 @Composable
@@ -195,7 +202,6 @@ fun DogCardFooter(dogItem: DogItem) {
             modifier = Modifier.padding(start = 8.dp, end = 8.dp)
         )
     }
-
 }
 
 @Composable
@@ -220,7 +226,6 @@ fun DogCardHeader(dogItem: DogItem) {
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp)
             )
         }
-
     }
 }
 

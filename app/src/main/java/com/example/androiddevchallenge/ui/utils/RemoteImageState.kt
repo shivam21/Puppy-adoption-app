@@ -26,5 +26,4 @@ sealed class RemoteImageState {
     ) : RemoteImageState()
 
     object LoadError : RemoteImageState()
-
 }

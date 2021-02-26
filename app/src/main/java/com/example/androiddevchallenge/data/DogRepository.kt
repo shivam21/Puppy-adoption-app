@@ -28,7 +28,7 @@ object DogRepository {
                 "https://cdn2.thedogapi.com/images/BJa4kxc4X.jpg",
                 "Small rodent hunting, lapdog",
                 "This little nugget had a rough start in life.. he came to us with dreadlocks!\n" +
-                        "Needs a special, savvy and understanding person to love him and respect his needs. He doesn't like to be picked up!!!!! He wags his tail all the time and plays with toys for hours. He’s pretty funny and entertaining. He has improved tremendously from his training and is so much friendlier but still acts out. Loves long walks. Knows basic commands. Still must be careful handling him."
+                    "Needs a special, savvy and understanding person to love him and respect his needs. He doesn't like to be picked up!!!!! He wags his tail all the time and plays with toys for hours. He’s pretty funny and entertaining. He has improved tremendously from his training and is so much friendlier but still acts out. Loves long walks. Knows basic commands. Still must be careful handling him."
             ),
             DogItem(
                 2,

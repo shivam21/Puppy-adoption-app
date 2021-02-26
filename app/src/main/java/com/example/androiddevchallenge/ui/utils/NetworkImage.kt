@@ -25,9 +25,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,7 +52,7 @@ fun NetworkImage(
         modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center,
 
-        ) {
+    ) {
         when (state) {
             is RemoteImageState.Loading -> {
                 if (loading != null) {

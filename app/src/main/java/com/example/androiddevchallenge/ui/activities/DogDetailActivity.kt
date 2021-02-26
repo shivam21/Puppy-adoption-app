@@ -104,10 +104,7 @@ class DogDetailActivity : AppCompatActivity() {
                         Text(text = "Adopt me \uD83D\uDC36")
                     }
                 }
-
             }
-
         }
     }
-
 }
