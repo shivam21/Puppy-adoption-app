@@ -15,6 +15,8 @@
  */
 package com.example.androiddevchallenge.ui.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +26,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -37,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,6 +52,8 @@ import com.example.androiddevchallenge.ui.utils.NetworkImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+const val INTENT_DOG_ITEM = "dogItem"
+
 class MainActivity : AppCompatActivity() {
 
     @ExperimentalAnimationApi
@@ -55,33 +61,45 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp()
+                MyApp("Doggo.cafe") {
+                    DogListContent()
+                }
             }
         }
+    }
+
+}
+
+@ExperimentalAnimationApi
+@Composable
+fun DogListContent() {
+    val dogsList = DogRepository.dogList
+    val listState = LazyListState()
+    val scope = rememberCoroutineScope()
+    Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+        DogList(dogsList, listState)
+        ScrollToTopButton(listState, scope)
     }
 }
 
 // Start building your app here!
 @ExperimentalAnimationApi
 @Composable
-fun MyApp() {
+fun MyApp(toolbarTitle: String = "", content: @Composable () -> Unit = {}) {
     Surface(color = MaterialTheme.colors.background) {
-        val dogsList = DogRepository.dogList
-        val listState = LazyListState()
-        val scope = rememberCoroutineScope()
         Scaffold(topBar = {
-            TopAppBar(
-                title = {
-                    Column(modifier = Modifier.padding(4.dp)) {
-                        Text(text = "Doggo.cafe")
-                    }
-                }
-            )
+            if (toolbarTitle.isNotEmpty())
+                TopAppBar(
+                    title = {
+                        Column(modifier = Modifier.padding(4.dp)) {
+                            Text(text = toolbarTitle)
+                        }
+                    },
+                    backgroundColor = Color.White,
+                    elevation = 4.dp
+                )
         }) {
-            Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-                DogList(dogsList, listState)
-                ScrollToTopButton(listState, scope)
-            }
+            content()
         }
 
     }
@@ -130,8 +148,12 @@ fun DogList(dogsList: List<DogItem>, listState: LazyListState) {
 }
 
 @Composable
-fun DogListItem(item: DogItem) {
-    Card(Modifier.fillMaxWidth().padding(8.dp)) {
+fun DogListItem(item: DogItem, context: Context = LocalContext.current) {
+    Card(Modifier.fillMaxWidth().padding(8.dp).clickable {
+        context.startActivity(Intent(context, DogDetailActivity::class.java).apply {
+            putExtra(INTENT_DOG_ITEM, item)
+        })
+    }) {
         Column(Modifier.fillMaxWidth()) {
             DogCardHeader(item)
             NetworkImage(
@@ -192,7 +214,9 @@ fun DogCardHeader(dogItem: DogItem) {
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp()
+        MyApp {
+            DogListContent()
+        }
     }
 }
 
@@ -201,6 +225,8 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        MyApp()
+        MyApp {
+            DogListContent()
+        }
     }
 }
