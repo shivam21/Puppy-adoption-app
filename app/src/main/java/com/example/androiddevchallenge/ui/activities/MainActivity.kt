@@ -33,15 +33,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -63,7 +66,7 @@ import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.data.DogRepository
 import com.example.androiddevchallenge.model.DogItem
 import com.example.androiddevchallenge.ui.theme.MyTheme
-import com.example.androiddevchallenge.ui.utils.NetworkImage
+import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -179,10 +182,12 @@ fun DogListItem(item: DogItem, context: Context = LocalContext.current) {
     ) {
         Column(Modifier.fillMaxWidth()) {
             DogCardHeader(item)
-            NetworkImage(
-                url = item.image,
+            CoilImage(
+                data = item.image,
+                contentScale = ContentScale.Crop,
+                contentDescription = "Header Image",
                 modifier = Modifier.fillMaxWidth().height(200.dp),
-                contentScale = ContentScale.Crop
+                loading = { CircularProgressBar() }
             )
             DogCardFooter(item)
         }
@@ -207,10 +212,12 @@ fun DogCardFooter(dogItem: DogItem) {
 @Composable
 fun DogCardHeader(dogItem: DogItem) {
     Row(Modifier.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
-        NetworkImage(
-            url = dogItem.image,
+        CoilImage(
+            data = dogItem.image,
+            contentScale = ContentScale.Crop,
+            contentDescription = "Foggy Image",
             modifier = Modifier.width(40.dp).height(40.dp).clip(CircleShape),
-            contentScale = ContentScale.Crop
+            loading = { CircularProgressBar() }
         )
         Column {
             Text(
@@ -226,6 +233,20 @@ fun DogCardHeader(dogItem: DogItem) {
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp)
             )
         }
+    }
+}
+
+@Preview(widthDp = 360, heightDp = 640)
+@Composable
+fun CircularProgressBar() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        CircularProgressIndicator(
+            strokeWidth = 2.dp,
+            modifier = Modifier.size(16.dp)
+        )
     }
 }
 

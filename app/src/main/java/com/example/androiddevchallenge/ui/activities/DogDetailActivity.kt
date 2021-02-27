@@ -41,11 +41,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.model.DogItem
 import com.example.androiddevchallenge.ui.theme.MyTheme
-import com.example.androiddevchallenge.ui.utils.NetworkImage
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 class DogDetailActivity : AppCompatActivity() {
 
@@ -75,13 +76,15 @@ class DogDetailActivity : AppCompatActivity() {
         }
     }
 
+    @Preview
     @Composable
-    private fun DogDetailsCard(dogItem: DogItem?) {
+    private fun DogDetailsCard(dogItem: DogItem? = DogItem(1, "doggy", "origin", "", "bred for", "description")) {
         Box {
-            NetworkImage(
-                url = dogItem?.image,
-                modifier = Modifier.fillMaxWidth().height(300.dp),
-                contentScale = ContentScale.Crop
+            CoilImage(
+                data = dogItem?.image.orEmpty(),
+                contentScale = ContentScale.Crop,
+                contentDescription = "Full Image",
+                modifier = Modifier.fillMaxWidth().height(300.dp)
             )
             Card(
                 shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
